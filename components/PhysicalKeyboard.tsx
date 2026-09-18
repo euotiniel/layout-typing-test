@@ -17,27 +17,38 @@ interface PhysicalKeyboardProps {
   onDragEnd?: () => void;
   onKeyTap?: (code: string) => void;
   showControlRow?: boolean;
+  /** Docks the mobile keyboard to the bottom of the viewport, edge-to-edge,
+   *  on a tray background — like a real on-screen keyboard. Desktop is
+   *  unaffected. */
+  mobileDock?: boolean;
 }
 
 const ROWS = [ROW_1_CODES, ROW_2_CODES, ROW_3_CODES];
 const ROW_OFFSET_FACTOR = [0, 0.3, 0.75]; // multiples of --key-unit, like a real keyboard's stagger
 
 export default function PhysicalKeyboard(props: PhysicalKeyboardProps) {
-  const { draggable } = props;
+  const { draggable, mobileDock } = props;
 
   // The editor needs individually addressable, drag-and-drop-able keys, so it
   // always gets the fixed-size staggered diagram (with horizontal scroll on
   // narrow screens) — drag-and-drop is a desktop-first interaction anyway.
   if (draggable) return <FixedKeyboard {...props} className="flex" />;
 
-  // Everywhere else: a fluid, edge-to-edge grid on small screens (the way
-  // real on-screen keyboards work — no physical stagger, keys fill the
-  // width), and the fixed staggered diagram from lg upward, where the
-  // keyboard is a reference visual next to a physical keyboard.
   return (
     <>
-      <FluidKeyboard {...props} className="lg:hidden" />
-      <FixedKeyboard {...props} className="hidden lg:flex" />
+      {mobileDock ? (
+        <div
+          className="fixed inset-x-0 bottom-0 z-20 border-t border-rule bg-sand/95 px-2 pt-2.5 backdrop-blur-sm lg:hidden"
+          style={{ paddingBottom: "max(0.65rem, env(safe-area-inset-bottom))" }}
+        >
+          <FluidKeyboard {...props} />
+        </div>
+      ) : (
+        <>
+          <FluidKeyboard {...props} className="lg:hidden" />
+          <FixedKeyboard {...props} className="hidden lg:flex" />
+        </>
+      )}
     </>
   );
 }
@@ -53,9 +64,9 @@ function FluidKeyboard({
   const maxErrors = errorKeys ? Math.max(1, ...Object.values(errorKeys)) : 1;
 
   return (
-    <div className={`flex w-full flex-col gap-1.5 select-none ${className}`}>
+    <div className={`flex w-full flex-col gap-2 select-none ${className}`}>
       {ROWS.map((row, i) => (
-        <div key={i} className="flex w-full gap-1">
+        <div key={i} className="flex w-full gap-1.5">
           {row.map((code) => (
             <Key
               key={code}
@@ -71,7 +82,7 @@ function FluidKeyboard({
         </div>
       ))}
       {showControlRow && (
-        <div className="flex w-full gap-1">
+        <div className="flex w-full gap-1.5">
           <Key
             code={SPACE_CODE}
             label=" "

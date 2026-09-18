@@ -57,8 +57,10 @@ export default function Key({
       tabIndex={-1}
       aria-hidden={!draggable && !tappable}
       className={[
-        "relative flex items-center justify-center select-none rounded-md border font-mono transition-colors duration-100",
-        fluid ? "h-12 text-base sm:h-14 sm:text-lg" : "",
+        "relative flex items-center justify-center select-none rounded-lg border font-mono transition-colors duration-100",
+        fluid
+          ? "h-14 text-lg shadow-[0_1px_0_rgba(24,24,24,0.06)] sm:h-16 sm:text-xl"
+          : "",
         active ? "bg-key-active border-key-active text-paper animate-press" : "bg-key border-rule text-ink",
         isDragSource ? "opacity-40" : "",
         isDropTarget ? "ring-2 ring-accent ring-offset-1 ring-offset-paper" : "",
@@ -66,7 +68,7 @@ export default function Key({
       ].join(" ")}
       style={
         fluid
-          ? { flex: `${unit} 1 0%`, minWidth: 0, fontSize: undefined }
+          ? { flex: `${unit} 1 0%`, minWidth: 0 }
           : {
               width: `calc(var(--key-unit) * ${unit} + var(--key-gap) * ${unit - 1})`,
               height: "var(--key-height)",
@@ -76,7 +78,7 @@ export default function Key({
     >
       {heat > 0 && !active && (
         <span
-          className="absolute inset-0 rounded-md bg-wrong pointer-events-none"
+          className="absolute inset-0 rounded-lg bg-wrong pointer-events-none"
           style={{ opacity: 0.12 + heat * 0.55 }}
         />
       )}

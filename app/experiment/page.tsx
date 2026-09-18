@@ -42,7 +42,7 @@ export default function ExperimentPage() {
   const layoutPosition = session.layoutIndex + 1;
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-editorial flex-col justify-center gap-10 px-6 py-14 sm:px-12 lg:px-20">
+    <main className="mx-auto flex min-h-dvh max-w-editorial flex-col gap-8 px-4 pt-10 pb-[19rem] sm:px-8 sm:pb-[21rem] lg:justify-center lg:gap-10 lg:px-20 lg:py-14 lg:pb-14">
       <header className="flex flex-col gap-3 text-center">
         <p className="font-mono text-xs tracking-wide text-ink-soft">
           layout {layoutPosition} de {layoutsTotal}
@@ -60,7 +60,8 @@ export default function ExperimentPage() {
         <TypingArea phrase={phrase} typed={typed} />
       </div>
 
-      <div className="flex justify-center overflow-x-auto">
+      {/* Desktop reference keyboard — inline, next to a physical keyboard. */}
+      <div className="hidden justify-center overflow-x-auto lg:flex">
         <PhysicalKeyboard map={map} activeCode={activeCode} onKeyTap={pressVirtualKey} />
       </div>
 
@@ -68,6 +69,9 @@ export default function ExperimentPage() {
         Escreve a frase acima — no teclado físico do computador ou tocando nas teclas do ecrã. Um
         erro fica marcado até corrigires com backspace.
       </p>
+
+      {/* Mobile keyboard — docked to the bottom of the screen, edge-to-edge. */}
+      <PhysicalKeyboard map={map} activeCode={activeCode} onKeyTap={pressVirtualKey} mobileDock />
     </main>
   );
 }
