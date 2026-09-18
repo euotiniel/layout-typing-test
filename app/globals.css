@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Mobile-first keyboard sizing: base values target small phones,
+   then grow at wider breakpoints. Consumed by Key.tsx / PhysicalKeyboard.tsx. */
+:root {
+  --key-unit: 1.9rem;
+  --key-gap: 0.22rem;
+  --key-height: 2.5rem;
+  --key-font: 0.68rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --key-unit: 2.6rem;
+    --key-gap: 0.32rem;
+    --key-height: 2.85rem;
+    --key-font: 0.85rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --key-unit: 3.1rem;
+    --key-gap: 0.4rem;
+    --key-height: 3.1rem;
+    --key-font: 0.95rem;
+  }
+}
+
+body {
+  min-height: 100dvh;
+}
+
+::selection {
+  background: #2b3a55;
+  color: #fafaf7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
