@@ -14,6 +14,7 @@ interface KeyProps {
   onDrop?: (code: string) => void;
   onDragEnd?: () => void;
   onPress?: (code: string) => void;
+  fluid?: boolean;
 }
 
 export default function Key({
@@ -30,6 +31,7 @@ export default function Key({
   onDrop,
   onDragEnd,
   onPress,
+  fluid,
 }: KeyProps) {
   const heat = intensity ?? 0;
   const tappable = Boolean(onPress) && !draggable;
@@ -56,16 +58,21 @@ export default function Key({
       aria-hidden={!draggable && !tappable}
       className={[
         "relative flex items-center justify-center select-none rounded-md border font-mono transition-colors duration-100",
+        fluid ? "h-12 text-base sm:h-14 sm:text-lg" : "",
         active ? "bg-key-active border-key-active text-paper animate-press" : "bg-key border-rule text-ink",
         isDragSource ? "opacity-40" : "",
         isDropTarget ? "ring-2 ring-accent ring-offset-1 ring-offset-paper" : "",
         draggable ? "cursor-grab active:cursor-grabbing" : tappable ? "cursor-pointer touch-manipulation" : "cursor-default",
       ].join(" ")}
-      style={{
-        width: `calc(var(--key-unit) * ${unit} + var(--key-gap) * ${unit - 1})`,
-        height: "var(--key-height)",
-        fontSize: "var(--key-font)",
-      }}
+      style={
+        fluid
+          ? { flex: `${unit} 1 0%`, minWidth: 0, fontSize: undefined }
+          : {
+              width: `calc(var(--key-unit) * ${unit} + var(--key-gap) * ${unit - 1})`,
+              height: "var(--key-height)",
+              fontSize: "var(--key-font)",
+            }
+      }
     >
       {heat > 0 && !active && (
         <span
